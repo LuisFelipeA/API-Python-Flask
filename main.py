@@ -1,9 +1,30 @@
 import pandas as pd
+from flask import Flask,jsonify
 
-tabela = pd.read_csv('Base de Dados.csv')
+# Inicializando aplicação
+app = Flask(__name__)
 
-total_vendas = tabela['Vendas'].sum()
+#Define Rota da Pagina Inicial
+@app.route('/') 
+# Função que retorna Informações da rota chamada
 
-print(tabela)
+def homepage():
+    return 'API Funcionando'
 
-print(total_vendas)
+
+ #Define Rota Personalizada
+@app.route('/totalvendas')
+
+def totalVendas():
+    # Importando Base de Dados e Somando Vendas
+    tabela = pd.read_csv('Base de Dados.csv')
+    total_vendas = tabela['Vendas'].sum()
+
+    resposta = {'total_vendas': total_vendas}
+
+    return jsonify(resposta)
+
+
+
+# Rodar API
+app.run(host='0.0.0.0')
